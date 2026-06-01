@@ -1,0 +1,52 @@
+Launching: C:\Users\Maksim\AppData\Local\Programs\Python\Python311\python.exe server.py
+Scheme: https
+Local: https://127.0.0.1:8000/?v=2911
+Wi-Fi: https://192.168.1.160:8000/?v=2911
+Radmin: https://26.194.37.214:8000/?v=2911
+C:\Users\Maksim\Desktop\yupi_messenger_pervak_edition\server.py:1120: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [17896]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on https://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:50543 - "GET /api/server-info?check=1780347570984 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50567 - "GET /?v=2911 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50567 - "GET /static/styles.css?v=2911 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50567 - "GET /static/assets/yupi-logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50569 - "GET /static/app.js?v=2911 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50572 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50567 - "GET /api/local-media/manifest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50569 - "GET /api/server-info HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50569 - "GET /api/me HTTP/1.1" 401 Unauthorized
+Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\Maksim\AppData\Local\Programs\Python\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\Maksim\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\Maksim\AppData\Local\Programs\Python\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\Maksim\AppData\Local\Programs\Python\Python311\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+INFO:     127.0.0.1:50610 - "POST /api/auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50610 - "GET /api/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50610 - "GET /api/conversations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50613 - "WebSocket /ws?token=s9X-dAIQPDhtNtrg08FC2EEv8Z1G_SxZzNWl2es5WRiqb6Rwjm2yhD7fvMTR8CY9" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:50669 - "GET /?v=2911 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50669 - "GET /static/styles.css?v=2911 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50674 - "GET /static/assets/yupi-logo.svg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50675 - "GET /static/app.js?v=2911 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50674 - "GET /api/local-media/manifest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50675 - "GET /api/server-info HTTP/1.1" 200 OK

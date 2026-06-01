@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Yupi Messenger</title>
+  <link rel="stylesheet" href="/static/styles.css?v=2911" />
+</head>
+<body data-yupi-build="v29.9">
+  <div class="background-layer">
+    <video id="custom-bg-video" class="custom-bg-video hidden" autoplay muted loop playsinline></video>
+    <div class="glow glow-left"></div>
+    <div class="glow glow-right"></div>
+    <div class="noise"></div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <div id="incoming-call-toast" class="incoming-call-toast hidden" role="dialog" aria-live="assertive">
+    <div class="incoming-call-toast-avatar avatar mini" id="incoming-call-toast-avatar"></div>
+    <div class="incoming-call-toast-copy">
+      <strong id="incoming-call-toast-name">Входящий звонок</strong>
+      <span id="incoming-call-toast-meta">Yupi Call</span>
+    </div>
+    <button type="button" id="incoming-call-toast-accept" class="incoming-call-toast-btn accept">Ответить</button>
+    <button type="button" id="incoming-call-toast-reject" class="incoming-call-toast-btn reject">Отклонить</button>
+  </div>
+
+  <section id="splash-screen" class="screen active">
+    <div class="auth-card splash-card">
+      <div class="yupi-logo large">
+        <img src="/static/assets/yupi-logo.svg" alt="Yupi" />
+      </div>
+      <h1>Yupi</h1>
+      <p>Загрузка интерфейса</p>
+      <div class="loader-ring" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="auth-screen" class="screen hidden">
+    <div class="auth-card">
+      <div class="yupi-logo">
+        <img src="/static/assets/yupi-logo.svg" alt="Yupi" />
+      </div>
+      <h1 id="auth-title">Войти в Yupi</h1>
+      <p class="auth-subtitle">Введите почту или телефон и продолжите работу в мессенджере.</p>
+
+      <div class="auth-tabs">
+        <button class="tab-btn active" data-auth-view="login">Вход</button>
+        <button class="tab-btn" data-auth-view="register">Регистрация</button>
+      </div>
+
+      <form id="login-form" class="auth-form">
+        <label>
+          <span>Почта или телефон</span>
+          <input type="text" name="login" placeholder="name@mail.com или +79990000000" autocomplete="username" />
+        </label>
+        <label>
+          <span>Пароль</span>
+          <input type="password" name="password" placeholder="Введите пароль" autocomplete="current-password" />
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" checked />
+          <span>Запомнить вход</span>
+        </label>
+        <button type="submit" class="primary-btn">Далее</button>
+      </form>
+
+      <form id="register-form" class="auth-form hidden">
+        <label>
+          <span>Имя</span>
+          <input type="text" name="display_name" placeholder="Ваше имя" autocomplete="name" />
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" placeholder="you@example.com" autocomplete="email" />
+        </label>
+        <label>
+          <span>Телефон</span>
+          <input type="text" name="phone" placeholder="+79990000000" autocomplete="tel" />
+        </label>
+        <label>
+          <span>Пароль</span>
+          <input type="password" name="password" placeholder="Минимум 6 символов" autocomplete="new-password" />
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" required checked />
+          <span>Я принимаю правила сервиса</span>
+        </label>
+        <button type="submit" class="primary-btn">Создать аккаунт</button>
+      </form>
+
+      <div id="demo-hint" class="demo-hint glass-subpanel">
+        <div class="demo-title">Демо-аккаунт</div>
+        <div>Логин: <code>support@yupi.local</code></div>
+        <div>Пароль: <code>demo123</code></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="app-screen" class="screen hidden">
+    <div class="app-shell">
+      <aside class="left-rail glass-panel">
+        <div class="left-rail-profile">
+          <button id="home-btn" class="profile-head">
+            <div class="avatar profile-avatar" id="profile-avatar"></div>
+            <div class="profile-copy">
+              <div class="profile-name-row">
+                <span id="profile-name">Nickname</span>
+                <span class="mini-arrow">⌄</span>
+              </div>
+              <div class="profile-subtitle" id="profile-subtitle">Yupi user</div>
+            </div>
+          </button>
+          <button id="settings-gear-btn" class="icon-pill tiny" data-media-slot="5" title="Настройки">⚙</button>
+        </div>
+
+        <nav class="left-rail-nav">
+          <button id="new-chat-btn" class="rail-btn active">
+            <span class="rail-icon rail-new" data-media-slot="2" aria-hidden="true"></span>
+            <span>New Chat</span>
+          </button>
+          <button id="archive-nav-btn" class="rail-btn">
+            <span class="rail-icon rail-archive" data-media-slot="3" aria-hidden="true"></span>
+            <span>Archive</span>
+          </button>
+          <button id="upk-nav-btn" class="rail-btn">
+            <span class="rail-icon rail-upk" data-media-slot="4" aria-hidden="true"></span>
+            <span>upk</span>
+          </button>
+          <button id="settings-nav-btn" class="rail-btn">
+            <span class="rail-icon rail-settings" data-media-slot="5" aria-hidden="true"></span>
+            <span>Settings</span>
+          </button>
+          <button id="admin-console-nav-btn" class="rail-btn admin-only hidden">
+            <span class="rail-icon rail-console" aria-hidden="true"></span>
+            <span>Консоль</span>
+          </button>
+        </nav>
+
+        <div class="left-rail-footer">
+          <button id="logout-btn" class="secondary-btn small">Выйти</button>
+        </div>
+      </aside>
+
+      <main class="workspace glass-panel">
+        <section class="dialogs-pane">
+          <div class="dialogs-top">
+            <label class="search-pill wide">
+              <span class="search-icon" data-media-slot="7">⌕</span>
+              <input type="text" id="conversation-search" placeholder="Search" />
+            </label>
+          </div>
+
+          <div class="story-row" id="story-row"></div>
+
+          <div class="pane-heading">
+            <div>
+              <div class="eyebrow">Yupi</div>
+              <h2 id="panel-title">Диалоги</h2>
+            </div>
+            <button class="icon-pill" id="sidebar-refresh-btn" title="Обновить">⟳</button>
+          </div>
+
+          <div class="chip-tabs" id="dashboard-tabs">
+            <button class="chip-tab active" data-filter="all">Все</button>
+            <button class="chip-tab" data-filter="direct">Личные</button>
+            <button class="chip-tab" data-filter="group">Группы</button>
+            <button class="chip-tab" data-filter="fav">Избранное</button>
+            <button class="chip-tab" data-filter="online">Online</button>
+          </div>
+
+          <div id="conversation-list" class="conversation-list"></div>
+          <div id="archive-list" class="conversation-list hidden"></div>
+          <div id="upk-list" class="upk-list hidden"></div>
+        </section>
+
+        <section class="chat-pane">
+          <div id="chat-shell">
+            <div class="chat-topbar">
+              <div class="chat-topbar-pill">
+                <div class="avatar mini" id="chat-avatar"></div>
+                <div>
+                  <div id="chat-title" class="chat-title">Yupi</div>
+                  <div id="chat-status" class="chat-status">Выберите диалог</div>
+                </div>
+              </div>
+              <div class="chat-topbar-actions">
+                <button class="icon-pill" id="favorite-toggle-btn" data-media-slot="10" title="Избранное — показать в фильтре Fav">★</button>
+                <button class="icon-pill" id="mute-toggle-btn" data-media-slot="15" title="Без звука">🔇</button>
+                <button class="icon-pill" id="archive-toggle-btn" data-media-slot="3" title="В архив">🗂</button>
+                <button class="icon-pill" id="audio-call-btn" title="Аудиозвонок">📞</button>
+                <button class="icon-pill" id="video-call-btn" title="Видеозвонок">🎥</button>
+              </div>
+            </div>
+
+            <div id="typing-indicator" class="typing-indicator hidden">Собеседник печатает...</div>
+            <div id="message-list" class="message-list">
+              <div class="empty-chat">
+                <div class="empty-chat-title">Откройте чат</div>
+                <div class="small-muted">Здесь появятся сообщения, звонки и вложения.</div>
+              </div>
+            </div>
+
+            <form id="composer-form" class="composer">
+              <button type="button" id="emoji-btn" class="composer-side-btn" title="Эмодзи">☺</button>
+              <label class="composer-pill">
+                <input type="text" id="message-input" placeholder="Сообщение" autocomplete="off" />
+              </label>
+              <button type="submit" class="composer-send-btn" data-media-slot="21" title="Отправить">➤</button>
+            </form>
+          </div>
+
+          <div id="settings-view" class="settings-view hidden">
+            <div class="settings-card glass-subpanel profile-settings-card">
+              <div class="eyebrow">Yupi</div>
+              <h3>Настройки профиля</h3>
+              <form id="settings-form" class="settings-form fancy-form">
+                <div class="profile-avatar-editor">
+                  <div class="avatar profile-avatar settings-avatar-preview" id="settings-avatar-preview"></div>
+                  <div class="profile-avatar-editor-copy">
+                    <strong>Аватар профиля</strong>
+                    <span>PNG или JPEG, до 8 МБ.</span>
+                    <button type="button" id="profile-avatar-upload-btn" class="secondary-btn small">Загрузить аватар</button>
+                    <input type="file" id="profile-avatar-upload-input" class="hidden" accept=".png,.jpg,.jpeg,image/png,image/jpeg" />
+                  </div>
+                </div>
+
+                <div class="settings-grid two-cols">
+                  <label>
+                    <span>Имя</span>
+                    <input type="text" id="settings-name" maxlength="32" autocomplete="given-name" />
+                  </label>
+                  <label>
+                    <span>Фамилия</span>
+                    <input type="text" id="settings-last-name" maxlength="32" autocomplete="family-name" />
+                  </label>
+                </div>
+
+                <label>
+                  <span>Описание</span>
+                  <textarea id="settings-bio" maxlength="240" rows="3" placeholder="Пару слов о себе"></textarea>
+                </label>
+                <label>
+                  <span>YouTube-канал</span>
+                  <input type="text" id="settings-youtube" maxlength="180" placeholder="https://youtube.com/@your-channel" />
+                </label>
+                <div class="profile-upk-card">
+                  <div>
+                    <div class="profile-upk-title">UPK в профиле</div>
+                    <div class="profile-upk-copy" id="profile-upk-copy">Можно привязать свой UPK-канал к профилю.</div>
+                  </div>
+                  <button type="button" id="profile-upk-btn" class="secondary-btn small">Привязать</button>
+                </div>
+                <div id="profile-upk-picker" class="profile-upk-picker hidden"></div>
+                <button type="submit" class="primary-btn">Сохранить</button>
+              </form>
+            </div>
+
+            <div class="settings-card glass-subpanel media-manager-card profile-background-card">
+              <div class="eyebrow">Yupi Background</div>
+              <h3>Фон приложения</h3>
+              <p class="media-help">
+                Можно загрузить PNG/JPEG/GIF/WEBP/MP4/WEBM или положить файл в <code>custom_media/backgrounds</code>.
+                Нажмите на миниатюру, чтобы применить фон.
+              </p>
+              <div class="media-toolbar">
+                <button type="button" id="media-refresh-btn" class="secondary-btn small">Обновить список</button>
+                <button type="button" id="background-upload-btn" class="primary-btn small">Загрузить фон</button>
+                <input type="file" id="background-upload-input" class="hidden" accept=".png,.jpg,.jpeg,.gif,.webp,.mp4,.webm,image/png,image/jpeg,image/gif,image/webp,video/mp4,video/webm" />
+              </div>
+              <div id="background-grid" class="media-bg-grid"></div>
+            </div>
+
+            <div id="asset-admin-card" class="settings-card glass-subpanel media-manager-card asset-admin-card hidden">
+              <div class="eyebrow">Yupi Support</div>
+              <h3>Служебные логотипы и иконки</h3>
+              <p class="media-help">
+                Эта панель видна только аккаунту <code>support@yupi.local</code>. Логотип входа — слот <code>1</code>.
+                Иконки принимают PNG/JPEG и лежат в <code>custom_media/icons</code>.
+              </p>
+              <div class="media-block">
+                <div class="profile-upk-title">Нумерация иконок</div>
+                <div class="profile-upk-copy">Файл <code>1.png</code> или <code>1.jpg</code> меняет логотип входа/регистрации. Остальные номера — кнопки и плеер.</div>
+                <div id="media-slot-list" class="media-slot-list"></div>
+              </div>
+            </div>
+          </div>
+
+
+          <div id="admin-console-view" class="admin-console-view hidden">
+            <div class="settings-card glass-subpanel admin-console-card">
+              <div class="eyebrow">Yupi Support</div>
+              <h3>Консоль</h3>
+              <div class="admin-console-toolbar">
+                <button type="button" id="admin-console-refresh-btn" class="secondary-btn small">Обновить</button>
+                <span id="admin-console-updated" class="admin-console-updated">-</span>
+              </div>
+              <div class="admin-console-stats">
+                <div class="admin-stat"><strong id="admin-online-count">0</strong><span>онлайн сейчас</span></div>
+                <div class="admin-stat"><strong id="admin-total-users">0</strong><span>всего пользователей</span></div>
+                <div class="admin-stat"><strong id="admin-active-sessions">0</strong><span>активных сессий</span></div>
+                <div class="admin-stat"><strong id="admin-total-messages">0</strong><span>сообщений</span></div>
+              </div>
+              <div class="admin-console-section">
+                <div class="profile-upk-title">Radmin VPN / сеть</div>
+                <div id="admin-network-list" class="admin-online-users"></div>
+              </div>
+              <div class="admin-console-section">
+                <div class="profile-upk-title">Пользователи онлайн</div>
+                <div id="admin-online-users" class="admin-online-users"></div>
+              </div>
+              <div class="admin-console-section">
+                <div class="profile-upk-title">Журнал входов и IP</div>
+                <div id="admin-access-log" class="admin-online-users admin-access-log"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="upk-view" class="upk-view hidden">
+            <div class="upk-channel-screen">
+              <div class="upk-channel-header">
+                <button type="button" id="upk-back-btn" class="icon-pill tiny" title="Назад">‹</button>
+                <div class="avatar mini" id="upk-avatar"></div>
+                <div class="upk-channel-title-wrap">
+                  <div id="upk-channel-title" class="upk-channel-title">UPK</div>
+                  <div id="upk-channel-meta" class="upk-channel-meta">Канал как в Telegram</div>
+                </div>
+                <button type="button" id="upk-create-channel-btn" class="icon-pill tiny" title="Поиск по каналу">⌕</button>
+              </div>
+
+              <div id="upk-search-panel" class="upk-search-panel hidden">
+                <label class="upk-search-input-wrap">
+                  <span>⌕</span>
+                  <input type="text" id="upk-search-input" placeholder="Поиск по каналу" autocomplete="off" />
+                </label>
+                <div class="upk-search-tools">
+                  <span id="upk-search-count" class="upk-search-count">0/0</span>
+                  <button type="button" id="upk-search-prev-btn" class="icon-pill tiny" title="Предыдущее">↑</button>
+                  <button type="button" id="upk-search-next-btn" class="icon-pill tiny" title="Следующее">↓</button>
+                  <button type="button" id="upk-search-list-btn" class="icon-pill tiny" title="Список найденного">▤</button>
+                  <button type="button" id="upk-search-close-btn" class="icon-pill tiny" title="Закрыть поиск">×</button>
+                </div>
+                <div id="upk-search-results" class="upk-search-results hidden"></div>
+              </div>
+
+              <div id="upk-empty-state" class="upk-empty-state">
+                <div class="upk-empty-icon">UPK</div>
+                <div class="upk-empty-title">Выберите или создайте UPK</div>
+                <div class="upk-empty-copy">Создатель публикует посты, подписчики ставят реакции и открывают комментарии.</div>
+                <button type="button" id="upk-empty-create-btn" class="primary-btn">Создать UPK</button>
+              </div>
+
+              <form id="upk-post-form" class="upk-post-form hidden">
+                <textarea id="upk-post-input" maxlength="4000" placeholder="Новый пост в UPK. Его увидят подписчики."></textarea>
+                <button type="submit" id="upk-post-submit" class="primary-btn">Опубликовать</button>
+              </form>
+
+              <div id="upk-feed" class="upk-feed"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="utility-pane glass-panel">
+        <div class="utility-header">
+          <button class="source-pill active" data-browser="vk" data-media-slot="12" title="VK Музыка">VK</button>
+          <button class="source-pill" data-browser="yandex" data-media-slot="13" title="Яндекс Музыка">ЯМ</button>
+          <button class="source-pill" data-browser="spotify" data-media-slot="14" title="Spotify">SP</button>
+        </div>
+        <button type="button" id="utility-swap-btn" class="utility-swap-btn hidden" title="Переключить звонок и музыку">♫</button>
+
+        <div id="browser-shell" class="browser-shell hidden">
+          <div class="browser-toolbar">
+            <div class="browser-title" id="browser-title">VK Музыка</div>
+            <button id="open-browser-external" class="icon-pill tiny" title="Открыть в новой вкладке">↗</button>
+          </div>
+          <div class="browser-notice" id="browser-notice">
+            Встроенное мобильное окно. Если сервис запрещает iframe, откройте его новой вкладкой.
+          </div>
+
+          <section class="figma-music-player" id="figma-music-player" aria-label="Музыкальный плеер">
+            <div class="figma-music-glow" aria-hidden="true"></div>
+            <div class="figma-music-track">
+              <span id="music-track-author">автор</span>
+              <strong id="music-track-title">Название</strong>
+            </div>
+            <div class="figma-music-time">
+              <span>1.07</span>
+              <div class="figma-music-progress"><span id="music-progress-fill"></span></div>
+              <span>-1.49</span>
+            </div>
+            <div class="figma-music-controls">
+              <button type="button" class="music-control ghost" id="music-shuffle-btn" title="Перемешать">⌘</button>
+              <button type="button" class="music-control" id="music-prev-btn" title="Предыдущий">◀◀</button>
+              <button type="button" class="music-control play" id="music-play-btn" title="Пауза">▌▌</button>
+              <button type="button" class="music-control" id="music-next-btn" title="Следующий">▶▶</button>
+              <button type="button" class="music-control ghost" id="music-window-btn" title="Окно">▭</button>
+            </div>
+          </section>
+
+          <div class="music-mobile-browser">
+            <div class="music-mobile-topbar">
+              <span id="music-mobile-url">music</span>
+              <button type="button" id="music-open-app" class="secondary-btn small">Открыть вкладкой</button>
+            </div>
+            <iframe id="browser-frame" title="Yupi music browser" referrerpolicy="no-referrer" allow="autoplay; encrypted-media; fullscreen; clipboard-write"></iframe>
+            <div id="music-status-card" class="music-status-card compact">
+              <div class="music-grid-error" aria-hidden="true"></div>
+              <div class="music-card-icon" id="music-card-icon" data-media-slot="11">♫</div>
+              <div class="music-card-title" id="music-card-title">Музыка</div>
+              <div class="music-card-copy" id="music-card-copy">Выберите VK, Яндекс Музыку или Spotify.</div>
+              <div class="music-actions">
+                <button type="button" id="music-probe-btn" class="secondary-btn small">Проверить сеть</button>
+              </div>
+              <div class="music-status-text" id="music-status-text">Готово к запуску.</div>
+              <div class="music-preview-stage" id="music-preview-stage" aria-hidden="true">
+                <div class="music-preview-orb one" aria-hidden="true"></div>
+                <div class="music-preview-orb two" aria-hidden="true"></div>
+                <div class="music-preview-service" id="music-preview-service">Музыка</div>
+                <div class="music-preview-art" id="music-preview-art">♫</div>
+                <div class="music-preview-artist" id="music-preview-artist">Автор</div>
+                <div class="music-preview-song" id="music-preview-song">Название</div>
+                <div class="music-preview-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="music-preview-controls" aria-hidden="true"><span>‹‹</span><strong>▌▌</strong><span>››</span></div>
+                <div class="music-preview-hint" id="music-preview-hint">Откройте вкладкой для входа и настоящего воспроизведения.</div>
+                <button type="button" class="music-preview-open" id="music-preview-open-btn">Открыть сервис</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="info-shell" class="info-shell">
+          <div class="avatar giant" id="info-avatar"></div>
+          <h3 id="info-name">Выберите чат</h3>
+          <div id="info-meta" class="info-meta">Когда выбран диалог, здесь показывается карточка пользователя.</div>
+          <div class="info-actions">
+            <button class="icon-pill" id="info-audio-call" title="Аудио">📞</button>
+            <button class="icon-pill" id="info-video-call" title="Видео">🎥</button>
+            <button class="icon-pill" id="contact-online-badge">offline</button>
+          </div>
+          <div class="glass-subpanel tiny-note">
+            В этой панели отображается браузер для музыки, карточка чата или звонок.
+          </div>
+        </div>
+
+        <div id="channel-info-shell" class="channel-info-shell hidden">
+          <div class="channel-info-head">
+            <button type="button" id="channel-info-close-btn" class="icon-pill tiny" title="Закрыть">×</button>
+            <div class="avatar giant" id="channel-info-avatar"></div>
+            <h3 id="channel-info-title">Канал</h3>
+            <div id="channel-info-meta" class="info-meta">Информация о канале</div>
+          </div>
+          <div id="channel-info-owner-tools" class="channel-info-owner-tools">
+            <label>
+              <span>Название канала</span>
+              <input type="text" id="channel-info-name-input" maxlength="64" placeholder="Название канала" />
+            </label>
+            <button type="button" id="channel-info-avatar-upload-btn" class="secondary-btn small">Загрузить аватар</button>
+            <input type="file" id="channel-info-avatar-upload-input" class="hidden" accept=".png,.jpg,.jpeg,image/png,image/jpeg" />
+            <button type="button" id="channel-info-save-btn" class="primary-btn small">Сохранить канал</button>
+          </div>
+          <div class="channel-info-section">
+            <div class="profile-upk-title">Подписчики</div>
+            <div id="channel-info-members" class="channel-member-list"></div>
+          </div>
+        </div>
+
+        <div id="call-shell" class="call-shell hidden">
+          <div id="incoming-call-card" class="incoming-call-card hidden">
+            <div class="avatar giant" id="incoming-call-avatar"></div>
+            <h3 id="incoming-call-name">Входящий звонок</h3>
+            <p id="incoming-call-meta" class="small-muted">Yupi</p>
+            <div class="call-button-row">
+              <button id="accept-call-btn" class="primary-btn">Ответить</button>
+              <button id="reject-call-btn" class="secondary-btn">Отклонить</button>
+            </div>
+          </div>
+
+          <div id="active-call-card" class="active-call-card hidden">
+            <div class="call-stage-header">
+              <button type="button" id="call-panel-back-btn" class="icon-pill tiny call-panel-back" title="Назад">‹</button>
+              <div>
+                <div class="eyebrow">Yupi Call</div>
+                <h3 id="call-stage-title">Звонок</h3>
+              </div>
+            </div>
+            <div class="video-stage">
+              <video id="remote-video" autoplay playsinline></video>
+              <video id="local-video" autoplay playsinline muted></video>
+            </div>
+            <div class="call-button-row full">
+              <button id="call-mic-btn" class="icon-pill" title="Микрофон">🎤</button>
+              <button id="call-sound-btn" class="icon-pill" title="Звук">🔊</button>
+              <button id="call-camera-btn" class="icon-pill" title="Камера">📷</button>
+              <button id="call-screen-btn" class="icon-pill" title="Демонстрация экрана">🖥</button>
+              <button id="call-end-btn" class="icon-pill danger" title="Завершить">✕</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div id="new-chat-modal" class="modal hidden">
+    <div class="modal-card glass-panel wide-modal">
+      <div class="panel-header compact">
+        <h3>Новый чат</h3>
+        <button class="icon-pill tiny" data-media-slot="20" data-close-modal="new-chat-modal">✕</button>
+      </div>
+
+      <div class="auth-tabs mini">
+        <button class="tab-btn active" data-create-view="direct">Личный чат</button>
+        <button class="tab-btn" data-create-view="group">Группа</button>
+        <button class="tab-btn" data-create-view="yupikey">Yupi Key</button>
+      </div>
+
+      <div id="direct-create-view" class="create-view">
+        <div class="search-box">
+          <input type="text" id="user-search-input" placeholder="Имя, почта или номер телефона" />
+        </div>
+        <div id="user-search-results" class="user-results"></div>
+      </div>
+
+      <div id="group-create-view" class="create-view hidden">
+        <label class="modal-label">
+          <span>Название группы</span>
+          <input type="text" id="group-title-input" placeholder="Например, Yupi Team" />
+        </label>
+        <div class="search-box">
+          <input type="text" id="group-search-input" placeholder="Добавить участников" />
+        </div>
+        <div id="group-search-results" class="user-results compact"></div>
+        <div class="selected-users-wrap">
+          <div class="small-muted">Выбранные участники</div>
+          <div id="group-selected-users" class="selected-users"></div>
+        </div>
+        <button id="create-group-btn" class="primary-btn">Создать группу</button>
+      </div>
+
+      <div id="yupikey-create-view" class="create-view hidden">
+        <label class="modal-label">
+          <span>Название Yupi Key</span>
+          <input type="text" id="yupikey-title-input" placeholder="Например, Дизайн" />
+        </label>
+        <div class="search-box">
+          <input type="text" id="yupikey-search-input" placeholder="Добавить участников" />
+        </div>
+        <div id="yupikey-search-results" class="user-results compact"></div>
+        <div class="selected-users-wrap">
+          <div class="small-muted">Участники Yupi Key</div>
+          <div id="yupikey-selected-users" class="selected-users"></div>
+        </div>
+        <button id="create-yupikey-btn" class="primary-btn">Создать Yupi Key</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="chat-context-menu" class="context-menu hidden">
+    <button data-context-action="mute">🔇 Выкл. звук</button>
+    <button data-context-action="archive">🗂 В архив</button>
+    <button data-context-action="attach">📎 Скрепка</button>
+    <button data-context-action="delete" class="danger-text">🗑 Удалить чат</button>
+  </div>
+
+  <script src="/static/app.js?v=2911"></script>
+
+  <div id="music-mini-window" class="music-mini-window hidden" role="dialog" aria-label="Музыкальное мини-окно">
+    <div class="music-mini-head">
+      <div>
+        <strong id="music-mini-title">Музыка</strong>
+        <span id="music-mini-url">music</span>
+      </div>
+      <div class="music-mini-actions">
+        <button type="button" id="music-mini-external-btn" title="Открыть отдельным окном">↗</button>
+        <button type="button" id="music-mini-close-btn" title="Закрыть">×</button>
+      </div>
+    </div>
+    <div class="music-mini-frame-wrap">
+      <iframe id="music-mini-frame" title="Yupi music mini browser" referrerpolicy="no-referrer" allow="autoplay; encrypted-media; fullscreen; clipboard-write"></iframe>
+      <div id="music-mini-fallback" class="music-mini-fallback hidden">
+        <b>Сайт запрещает встраивание iframe.</b>
+        <span>Это не баг Yupi: жмите ↗, сервис откроется отдельным окном.</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

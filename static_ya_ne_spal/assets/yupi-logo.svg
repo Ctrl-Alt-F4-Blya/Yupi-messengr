@@ -1,0 +1,33 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wingLeft" x1="40" y1="58" x2="122" y2="126" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C96F69"/>
+      <stop offset="1" stop-color="#9B4C73"/>
+    </linearGradient>
+    <linearGradient id="wingRight" x1="142" y1="58" x2="216" y2="126" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C98B58"/>
+      <stop offset="1" stop-color="#B06E56"/>
+    </linearGradient>
+    <linearGradient id="body" x1="128" y1="86" x2="128" y2="224" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B97C76"/>
+      <stop offset="0.68" stop-color="#8F5D8C"/>
+      <stop offset="1" stop-color="#5B3A6D"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="82" y1="92" x2="174" y2="158" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C69382"/>
+      <stop offset="1" stop-color="#D29C89"/>
+    </linearGradient>
+    <filter id="soft" x="14" y="18" width="228" height="216" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#soft)">
+    <circle cx="72" cy="86" r="39" fill="url(#wingLeft)"/>
+    <circle cx="184" cy="86" r="39" fill="url(#wingRight)"/>
+    <path d="M90 70C98 70 104 74 108 82L117 102C121 111 129 116 138 116H139C148 116 156 111 160 102L169 82C173 74 179 70 187 70C174 103 164 121 144 139L128 154L112 139C92 121 82 103 69 70H90Z" fill="url(#body)"/>
+    <path d="M128 104C128 104 112 114 91 122C103 110 112 100 119 87C123 79 126 72 128 66C130 72 133 79 137 87C144 100 153 110 165 122C144 114 128 104 128 104Z" fill="url(#ribbon)"/>
+    <path d="M128 104C128 104 114 131 111 151C108 171 114 191 128 204C142 191 148 171 145 151C142 131 128 104 128 104Z" fill="url(#body)"/>
+    <circle cx="128" cy="170" r="31" fill="url(#body)"/>
+  </g>
+</svg>

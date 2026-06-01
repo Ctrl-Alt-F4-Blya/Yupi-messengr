@@ -1,0 +1,7 @@
+Yupi access URLs
+Version: v29.11-pervak-clean-music
+Local: https://127.0.0.1:8000/?v=2911
+Wi-Fi/LAN: https://192.168.1.160:8000/?v=2911
+Radmin VPN: https://26.194.37.214:8000/?v=2911
+HTTPS note: Локальный HTTPS-сертификат уже есть.
+For Radmin calls use HTTPS URL and accept browser certificate warning.
